@@ -18,7 +18,7 @@ app.use(express.json())
 app.use(cors())
 
 //db config
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect("mongodb+srv://kirubelfikruwsh:Xkg5PkuXdPcCcYWK@eb-todo-cluster.jnhmlpz.mongodb.net/", {
     useNewUrlParser: true,
 }, (err) => {
     if (err) {
