@@ -1,0 +1,44 @@
+name: Deploy Test API
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: [self-hosted, self-hosted-backend]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Check the current user
+        run: |
+          whoami
+
+      - name: Build Test API Docker image
+        run: |
+          docker build -t test_api_image .
+
+      - name: Push Test API Docker image
+        run: |
+          docker push test_api_image kirubelfikru/test_api_image    
+
+      # - name: Deploy Test API
+      #   run: |
+      #     docker stop test_api_container || true
+      #     docker rm test_api_container || true
+      #     docker run -d \
+      #     -e PORT=${{vars.PORT}} \
+      #     -e NODE_ENV=${{vars.API_NODE_ENV}} \
+      #     -e MONGO_URI=${{secrets.MONGO_URI}} \
+      #     -e JWT_SECRET=${{secrets.JWT_SECRET}} \
+      #     -e GMAIL_USERNAME=${{secrets.GMAIL_USERNAME}} \
+      #     -e GMAIL_PASSWORD=${{secrets.GMAIL_PASSWORD}} \
+      #     --name test_api_container \
+      #     -p ${{vars.API_PORT}}:${{vars.API_PORT}} \
+      #     test_api_image:latest
+
+      # - name: Remove Dangling Docker images
+      #   run: |
+      #     docker rmi $(docker images --quiet --filter "dangling=true") || true
